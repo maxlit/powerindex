@@ -40,7 +40,7 @@ Thus, in this simple example both indices give 100% to 0% distribution. Now, con
 	print game.banzhaf
 	>>> [0.4166666666666667, 0.25, 0.25, 0.08333333333333333]
 
-Interpretation is simple. A committee where 4 parties hold 40%,30%,20% and 10% of seats with required qualified majority of 60%, have 41.7%,25%,25%,8.3% of power respectively.  
+Interpretation is simple. A committee where 4 parties hold 40%, 30%, 20% and 10% of seats with required qualified majority of 60%, have 41.7%, 25%, 25%, 8.3% of power respectively.  
 In this example, having 2 or 3 seats leads to the same level of power.  
 
 Another example from Wikipedia::
@@ -84,7 +84,7 @@ Let's take Europen Economic Community (EEC) in the years 1958-1972, its members 
 	game.calc()
 	game.pie_chart()
 
-.. image:: https://github.com/maxlit/powerindex/raw/master/ex1.png
+.. image:: https://github.com/maxlit/powerindex/raw/master/ex2.png
 
 As you can see both in Banzhaf and Shapley-Shubik approach to measure power, Luxembourg has 0% of power.  
 
