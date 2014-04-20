@@ -44,6 +44,7 @@ Interpretation is simple. A committee where 4 parties hold 40%,30%,20% and 10% o
 In this example, having 2 or 3 seats leads to the same level of power.  
 
 Another example from Wikipedia::
+
 	game=px.Game(6,[3, 2, 1, 1])
 	game.calc_banzhaf()
 	print game.banzhaf
