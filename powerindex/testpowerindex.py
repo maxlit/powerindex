@@ -1,9 +1,9 @@
 import unittest
-from pyVote import *
+from powerindex import *
 from math import exp as e, sin, sqrt
 # python -m unittest discover project_directory '*_test.py'
-# cd Dropbox/scripts/PowerIndex/pyVote
-# python -m unittest testpyVote
+# cd Dropbox/scripts/PowerIndex/powerindex
+# python -m unittest testpowerindex
 
 class TestPowerIndex(unittest.TestCase):
     #cf=cf1+cf2
