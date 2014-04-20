@@ -168,33 +168,47 @@ class Game:
                     c[n].append(coeffs[n][k]-c[n-1][k-w])
         return c
 
-    def plot(self):
+    def pie_chart(self):
         indices={}
         if self.shapley_shubik is not None:
             indices["Shapley-Shubik Power Index"]=self.shapley_shubik
         if self.banzhaf is not None:
             indices["Banzhaf Power Index"]=self.banzhaf
-
-        colors_cycle=it.cycle('bgrmcyk')# blue, green, red, ...
-        colors=[colors_cycle.next() for weight in self.weights]
         
         try:
             import matplotlib.pyplot as plt
+            from matplotlib.gridspec import GridSpec
+            from matplotlib.colors import ColorConverter
+            CC=ColorConverter()
         except ImportError as ex:
             print "plot() function requires matplotlib library which is not installed on your computer"
             raise ex
-        f, axarr = plt.subplots(len(indices))
+        
+        #colors_cycle=it.cycle('bgrmcyk')# blue, green, red, ...
+        #colors=[colors_cycle.next() for weight in self.weights]
+        gray_scales=[i/100.0 for i in sorted(range(50,100,10),reverse=True)]
+        
+        colors_cycle=it.cycle(gray_scales)# blue, green, red, ...
+        colors_raw=[colors_cycle.next() for weight in self.weights]
+        if colors_raw[0]==colors_raw[-1]:
+            colors_raw[-1]-=0.1
+        colors=[CC.to_rgb(str(color)) for color in colors_raw]
+        
+        I=len(indices)
+        the_grid = GridSpec(1, I)
         i=0
         labels=[player.name for player in self.parties]
         for name in indices:
+            ax=plt.subplot(the_grid[0, i], aspect=1)
             try:
-                axarr[i].pie(indices[name], labels=labels, shadow=True,autopct='%1.1f%%', colors=colors,startangle=90)
+                plt.pie(indices[name], labels=labels, colors=colors ,autopct='%1.1f%%',startangle=90)
             except TypeError:
-                axarr[i].pie(indices[name], labels=labels, shadow=True, autopct='%1.1f%%', colors=colors)
-            axarr[i].set_title(name)
-            
+                pass
+            ax.set_title(name,bbox={'facecolor':'0.8', 'pad':5},fontweight='bold')
             i+=1
-        plt.show(block=False)
         
+        plt.show()
+
     def hist():
+        # to do
         n, bins, patches = plt.hist(x, num_bins, normed=1, facecolor='green', alpha=0.5)
