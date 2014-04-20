@@ -6,13 +6,13 @@ long_description = """Example Packages do this and that
 """
 
 setup(name='powerindex',
-    version='0.0.1',
+    version='0.0.2',
     description='python library to calculate power indices in weighted voting games',
     author='Maxim Litvak',
     author_email='maxim@litvak.eu',
-    url='http://github.com/maxlit/pyVote',
+    url='http://github.com/maxlit/powerindex',
     test_suite='test',
-    packages=[''],
+    packages=['powerindex'],
     keywords=['power index','voting','Banzhaf','Shapley','Shubik', 'weighted voting game','game theory', 'political science'],
     classifiers=[
         'Development Status :: 3 - Alpha',
