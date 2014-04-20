@@ -65,11 +65,13 @@ Thus, the level of power depends on how you measure it.
 Plot the results
 ----------------------------------
 
+** Plot as a pie chart **
+
 There's a possibility to plot the power distribution as a pie chart::
 
 	game=px.Game(4,[3, 2, 1])
 	game.calc()
-	game.plot()
+	game.pie_chart()
 
 .. image:: https://github.com/maxlit/powerindex/raw/master/ex1.png
 
@@ -80,7 +82,7 @@ Let's take Europen Economic Community (EEC) in the years 1958-1972, its members 
 	parties=[px.Party(countries[country],country) for country in countries]
 	game=px.Game(12,parties=parties)
 	game.calc()
-	game.plot()
+	game.pie_chart()
 
 .. image:: https://github.com/maxlit/powerindex/raw/master/ex1.png
 
