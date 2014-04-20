@@ -51,7 +51,7 @@ Another example from Wikipedia::
 
 Notice that in the previous two examples Banzhaf and Shapley-Shubik indices coincides. It doesn't hold in general even in the games of 3 voters::
 
-	game=Game(4,[3, 2, 1])
+	game=px.Game(4,[3, 2, 1])
 	game.calc() # again it calculates all available indices
 	print game.banzhaf
 	>>> [0.6,0.2,0.2]
