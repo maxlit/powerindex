@@ -35,6 +35,9 @@ class Game:
         self.N=len(self.weights)
         self.banzhaf=None
         self.shapley_shubik=None
+        s_weights=float(sum(self.weights))
+        self.nominal=[weight/s_weights for weight in self.weights]
+        
     def __len__(self):
         return len(self.parties)
     def __str__(self):
@@ -44,8 +47,15 @@ class Game:
         This function launches calculation of all implemented indeces
     """
     def calc(self):
-        self.calc_banzhaf()
-        self.calc_shapley_shubik()
+        # find if there's a party with seats greater or equal to quota
+        ge_quota=map(lambda x: 1 if x>=self.quota else 0,self.weights)
+        num_ge_quota=sum(ge_quota)
+        if num_ge_quota==0: # if not calculate according to algos
+            self.calc_banzhaf()
+            self.calc_shapley_shubik()
+        else: # if yes manually assign all power to the party (parties)
+            self.banzhaf=map(lambda x: x/float(num_ge_quota),ge_quota)
+            self.shapley_shubik=map(lambda x: x/float(num_ge_quota),ge_quota)
 
     """
         Computes Banzhaf power index using generating function approach.
