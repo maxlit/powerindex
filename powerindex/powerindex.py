@@ -178,12 +178,14 @@ class Game:
                     c[n].append(coeffs[n][k]-c[n-1][k-w])
         return c
 
-    def pie_chart(self):
-        indices={}
-        if self.shapley_shubik is not None:
-            indices["Shapley-Shubik Power Index"]=self.shapley_shubik
-        if self.banzhaf is not None:
-            indices["Banzhaf Power Index"]=self.banzhaf
+    def pie_chart(self,indices=["banzhaf","shapley"],fname=None):
+        pow_indices={}
+        if "shapley" in indices and self.shapley_shubik is not None:
+            pow_indices["Shapley-Shubik Power Index"]=self.shapley_shubik
+        if "banzhaf" in indices and self.banzhaf is not None:
+            pow_indices["Banzhaf Power Index"]=self.banzhaf
+        if "nominal" in indices and self.nominal is not None:
+            pow_indices["% of seats"]=self.nominal
         
         try:
             import matplotlib.pyplot as plt
@@ -204,19 +206,20 @@ class Game:
             colors_raw[-1]-=0.1
         colors=[CC.to_rgb(str(color)) for color in colors_raw]
         
-        I=len(indices)
+        I=len(pow_indices)
         the_grid = GridSpec(1, I)
         i=0
         labels=[player.name for player in self.parties]
-        for name in indices:
+        for name in pow_indices:
             ax=plt.subplot(the_grid[0, i], aspect=1)
             try:
-                plt.pie(indices[name], labels=labels, colors=colors ,autopct='%1.1f%%',startangle=90)
+                plt.pie(pow_indices[name], labels=labels, colors=colors ,autopct='%1.1f%%',startangle=90)
             except TypeError:
                 pass
             ax.set_title(name,bbox={'facecolor':'0.8', 'pad':5},fontweight='bold')
             i+=1
-        
+        if fname is not None:
+            plt.savefig(fname)
         plt.show()
 
     def hist():

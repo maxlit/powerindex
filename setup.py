@@ -6,7 +6,7 @@ long_description = """Example Packages do this and that
 """
 
 setup(name='powerindex',
-    version='0.0.2',
+    version='0.0.3',
     description='python library to calculate power indices in weighted voting games',
     author='Maxim Litvak',
     author_email='maxim@litvak.eu',
