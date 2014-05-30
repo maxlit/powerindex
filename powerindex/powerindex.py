@@ -35,8 +35,8 @@ class Game:
         self.N=len(self.weights)
         self.banzhaf=None
         self.shapley_shubik=None
-        s_weights=float(sum(self.weights))
-        self.nominal=[weight/s_weights for weight in self.weights]
+        self.s_weights=float(sum(self.weights))
+        self.nominal=[weight/self.s_weights for weight in self.weights]
         
     def __len__(self):
         return len(self.parties)
@@ -178,23 +178,44 @@ class Game:
                     c[n].append(coeffs[n][k]-c[n-1][k-w])
         return c
 
-    def pie_chart(self,indices=["banzhaf","shapley"],fname=None):
+    def pie_chart(self,indices=["banzhaf","shapley"],fname=None,show=True):
+        hashed_parties=zip(range(self.N),self.parties) # assign a number to each parties in order to match their power indices later on
+        ordered_hashed_parties=sorted(hashed_parties,key=lambda x: x[1].weight)
+        #median=ordered_hashed_parties[self.N/2][1].weight
+        #ordered_hashed_parties=sorted(ordered_hashed_parties,key=lambda x: abs(x[1].weight-median)) # mix big and small parties
+
+        if self.N>3:# receipt from http://nxn.se/post/46440196846/making-nicer-looking-pie-charts-with-matplotlib
+            large = ordered_hashed_parties[:self.N / 2]
+            small = ordered_hashed_parties[self.N / 2:]
+            reordered_hashed_parties = large[::2] + small[::2] + large[1::2] + small[1::2]
+            angle = 310
+        else:
+            reordered_hashed_parties=ordered_hashed_parties
+            angle=90
+            
         pow_indices={}
         if "shapley" in indices and self.shapley_shubik is not None:
-            pow_indices["Shapley-Shubik Power Index"]=self.shapley_shubik
+            pow_indices["Shapley-Shubik Power Index"]=[self.shapley_shubik[el[0]] for el in reordered_hashed_parties]
         if "banzhaf" in indices and self.banzhaf is not None:
-            pow_indices["Banzhaf Power Index"]=self.banzhaf
+            pow_indices["Banzhaf Power Index"]=[self.banzhaf[el[0]] for el in reordered_hashed_parties]
         if "nominal" in indices and self.nominal is not None:
-            pow_indices["% of seats"]=self.nominal
+            pow_indices["% of seats"]=[self.nominal[el[0]] for el in reordered_hashed_parties]
         
         try:
             import matplotlib.pyplot as plt
+            plt.rcParams['figure.figsize']=12,9
+            plt.rcParams['font.size']=18
+            plt.rcParams['axes.titlesize']=22
+            #plt.rcParams['savefig.dpi']=200
             from matplotlib.gridspec import GridSpec
             from matplotlib.colors import ColorConverter
             CC=ColorConverter()
         except ImportError as ex:
             print "plot() function requires matplotlib library which is not installed on your computer"
             raise ex
+        
+        # make a pie chart look nices as described here: http://nxn.se/post/46440196846/making-nicer-looking-pie-charts-with-matplotlib
+        
         
         #colors_cycle=it.cycle('bgrmcyk')# blue, green, red, ...
         #colors=[colors_cycle.next() for weight in self.weights]
@@ -213,15 +234,41 @@ class Game:
         for name in pow_indices:
             ax=plt.subplot(the_grid[0, i], aspect=1)
             try:
-                plt.pie(pow_indices[name], labels=labels, colors=colors ,autopct='%1.1f%%',startangle=90)
+                plt.pie(pow_indices[name], labels=labels, labeldistance=1.1
+                        , colors=colors ,autopct='%1.1f%%',startangle=angle)
             except TypeError:
                 pass
             ax.set_title(name,bbox={'facecolor':'0.8', 'pad':5},fontweight='bold')
             i+=1
         if fname is not None:
             plt.savefig(fname)
-        plt.show()
+            plt.close()
+        if show:
+            plt.show()
+
+    def save_as_csv(self,full_filename,indices=["banzhaf","shapley","nominal"]):
+        pow_indices={}
+        if "shapley" in indices and self.shapley_shubik is not None:
+            pow_indices["Shapley-Shubik Power Index"]=self.shapley_shubik
+        if "banzhaf" in indices and self.banzhaf is not None:
+            pow_indices["Banzhaf Power Index"]=self.banzhaf
+        if "nominal" in indices and self.nominal is not None:
+            pow_indices["% of seats"]=self.nominal
+
+        output="Party;Seats;"+";".join(pow_indices.keys())+"\n"
+        c=0
+        for party in parties:
+            output+="%s;%s"%(party.name,party.weight)
+            for name in pow_indices:
+                output+=";%s"%str(pow_indices[name][c])
+            output+="\n"
+            c+=1
+
+        f=open(full_filename,'w')
+        f.write(output)
+        f.close()
 
     def hist():
         # to do
         n, bins, patches = plt.hist(x, num_bins, normed=1, facecolor='green', alpha=0.5)
+        print "not implemented yet"
