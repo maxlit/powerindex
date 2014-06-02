@@ -192,7 +192,8 @@ class Game:
         else:
             reordered_hashed_parties=ordered_hashed_parties
             angle=90
-            
+
+        reordered_parties=[el[1] for el in reordered_hashed_parties]
         pow_indices={}
         if "shapley" in indices and self.shapley_shubik is not None:
             pow_indices["Shapley-Shubik Power Index"]=[self.shapley_shubik[el[0]] for el in reordered_hashed_parties]
@@ -204,8 +205,10 @@ class Game:
         try:
             import matplotlib.pyplot as plt
             plt.rcParams['figure.figsize']=12,9
-            plt.rcParams['font.size']=18
-            plt.rcParams['axes.titlesize']=22
+            plt.rcParams['font.size']=16
+            plt.rcParams['axes.titlesize']=24
+            plt.rcParams['font.family']='fantasy'
+            plt.rcParams['font.weight']='semibold'
             #plt.rcParams['savefig.dpi']=200
             from matplotlib.gridspec import GridSpec
             from matplotlib.colors import ColorConverter
@@ -220,22 +223,57 @@ class Game:
         #colors_cycle=it.cycle('bgrmcyk')# blue, green, red, ...
         #colors=[colors_cycle.next() for weight in self.weights]
         gray_scales=[i/100.0 for i in sorted(range(50,100,10),reverse=True)]
+
+        rgb_colors={
+            "Maroon":"#800000",  #(128,0,0),
+            "Olive":"#808000",   #(128,128,0),
+            "Pale Green":"#98FB98",   #(152,251,152),
+            "Teal":"#008080", #(0,128,128),
+            "Peru": "#CD853F",#(205,133,63),
+            "Steel Blue":"#4682B4",   #(70,130,180),
+            "Slate Blue":"#6A5ACD",   #(106,90,205),
+            "Pale Violet Red":"#DB7093",  #(219,112,147),
+            "Khaki":"#F0E68C",    #(240,230,140),
+            "Thistle":"#D8BFD8" #(216,191,216)
+            }
         
-        colors_cycle=it.cycle(gray_scales)# blue, green, red, ...
-        colors_raw=[colors_cycle.next() for weight in self.weights]
-        if colors_raw[0]==colors_raw[-1]:
-            colors_raw[-1]-=0.1
-        colors=[CC.to_rgb(str(color)) for color in colors_raw]
+        design="color"
+        
+        if design=="gray":
+            colors_cycle=it.cycle(gray_scales)# blue, green, red, ...
+            colors_raw=[colors_cycle.next() for weight in self.weights]
+            if colors_raw[0]==colors_raw[-1]:
+                colors_raw[-1]-=0.1
+            colors=[CC.to_rgb(str(color)) for color in colors_raw]
+        else:
+            colors_cycle=it.cycle(rgb_colors.values())# blue, green, red, ...
+            colors_raw=[colors_cycle.next() for weight in self.weights]
+            colors=colors_raw
         
         I=len(pow_indices)
         the_grid = GridSpec(1, I)
         i=0
-        labels=[player.name for player in self.parties]
+        labels=[player.name for player in reordered_parties]
+        
+        labels_raw=[player.name for player in reordered_parties]
+        
+        labels=[]
+        for label in labels_raw:# if the name of the party is too long split it in two lines
+            if len(label)>24:
+                spl=label.split(' ')
+                L=len(spl)
+                if L>1: # if 2 words or more than split in 2 lines
+                    label="%s\n    %s"%(' '.join(spl[:3*L/4]),' '.join(spl[3*L/4:]))
+            labels.append(label)
+        
+        
         for name in pow_indices:
+            #labels=["%s (%s)"%(reordered_parties[i].name,round(pow_indices[name][i]*100,1)) for i in range(self.N)]
             ax=plt.subplot(the_grid[0, i], aspect=1)
             try:
                 plt.pie(pow_indices[name], labels=labels, labeldistance=1.1
-                        , colors=colors ,autopct='%1.1f%%',startangle=angle)
+                        , colors=colors ,autopct='%1.1f%%',startangle=angle,
+                        pctdistance=0.8)
             except TypeError:
                 pass
             ax.set_title(name,bbox={'facecolor':'0.8', 'pad':5},fontweight='bold')
