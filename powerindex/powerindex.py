@@ -255,7 +255,7 @@ class Game:
         i=0
         labels=[player.name for player in reordered_parties]
         
-        labels_raw=[player.name for player in reordered_parties]
+        labels_raw=[str(player.name) for player in reordered_parties]
         
         labels=[]
         for label in labels_raw:# if the name of the party is too long split it in two lines

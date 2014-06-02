@@ -4,8 +4,10 @@ powerindex
 
 What is it all about?
 ---------------------
-The aim of the package is to compute different power indices of the so-called weighted voting systems (games). 
+The aim of the package is to compute different power indices of the so-called weighted voting systems (games). This package was employed to perform calculations at powdist.com_
+
 Players have weights and can form coalitions. A coalition that achieves the required threshold wins.  
+
 Consider a system with two parties A and B having 51 and 49 seats respectively with a simple majority rule (i.e. the threshold is 51 seats).  
 How much power do they have? It may appear that according to the number of the seats they have 51% and 49% respectively.   
 However, party A can impose any decision without cooperating with party B.  
@@ -109,9 +111,13 @@ If the input has non-integers, then an approximation scheme is usually involved.
 Literature:
 -----------
 B.Keijzer - A Survey on the Computation of Power Indices (2008)  
+
 T.Uno - Efficient Computation of Power Indices for Weighted Majority Games (2003)  
+
 T. Matsui, Y. Matsui - A Survey of Algorithms for Calculating Power Indices of Weighted Majority Games (2000)  
+
 B.Meglicki - Generating functions partitioning algorithm for com­puting power indices in weighted voting games (20??)  
+
 K. Zyczkowski, W. Slomczynski - Voting in the European Union: the square root system of Penrose and a critical point (2004)  
 
 
@@ -120,5 +126,6 @@ To Do's:
 -------
 ...
 
+.. _powdist.com: http://powdist.com
 .. _Banzhaf: http://en.wikipedia.org/wiki/Banzhaf_power_index
 .. _Shapley-Shubik: http://en.wikipedia.org/wiki/Shapley%E2%80%93Shubik_power_index
