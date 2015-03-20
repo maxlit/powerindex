@@ -2,6 +2,8 @@
 powerindex
 ==============
 
+.. image:: https://github.com/maxlit/powerindex/raw/master/ex2.png
+
 What is it all about?
 ---------------------
 The aim of the package is to compute different power indices of the so-called weighted voting systems (games). This package was employed to perform calculations at powdist.com_
@@ -9,8 +11,10 @@ The aim of the package is to compute different power indices of the so-called we
 Players have weights and can form coalitions. A coalition that achieves the required threshold wins.  
 
 Consider a system with two parties A and B having 51 and 49 seats respectively with a simple majority rule (i.e. the threshold is 51 seats).  
-How much power do they have? It may appear that according to the number of the seats they have 51% and 49% respectively.   
+How much power do they have? It may appear that according to the number of the seats they have 51% and 49% respectively.
+   
 However, party A can impose any decision without cooperating with party B.  
+
 It leads to a conclusion that any reasonable rule would assign to party A 100% of the power (since it wins without cooperation) and to the party B 0% of the power and not 51% to 49%.  
 
 The most popular approaches to measure power are Banzhaf_ and Shapley-Shubik_  power indices.  
@@ -23,7 +27,7 @@ Let's implement an example from the introduction::
 
 	#!/usr/bin/env python
 	import powerindex as px
-	game=px.Game(51,[51,49])
+	game=px.Game(quota=51,weights=[51,49])
 
 Now calculate Banzhaf and Shapley-Shubik power indices::
 
@@ -34,8 +38,22 @@ Now calculate Banzhaf and Shapley-Shubik power indices::
 	print game.shapley_shubik
 	>>> [1.0,0.0]
 
-By the way, Function calc() computes all available indices.  
-Thus, in this simple example both indices give 100% to 0% distribution. Now, consider a non-trivial, but still simple examples from Wikipedia::
+Function calc() computes all available indices.  
+
+Thus, in this simple example both indices give 100% to 0% distribution.
+
+Now let's changes the seats distribution to the parity and see what happens::
+ 
+	game=px.Game(51,weights=[50,50])
+	game.calc()
+	print game.banzhaf
+	>>> [0.5,0.5]
+	print game.shapley_shubik
+	>>> [0.5,0.5]
+
+As the result, the power distribution is also at parity.
+
+Now, consider a non-trivial, but still simple examples from Wikipedia::
 
 	game=px.Game(6,[4, 3, 2, 1])
 	game.calc_banzhaf()
@@ -43,6 +61,7 @@ Thus, in this simple example both indices give 100% to 0% distribution. Now, con
 	>>> [0.4166666666666667, 0.25, 0.25, 0.08333333333333333]
 
 Interpretation is simple. A committee where 4 parties hold 40%, 30%, 20% and 10% of seats with required qualified majority of 60%, have 41.7%, 25%, 25%, 8.3% of power respectively.  
+
 In this example, having 2 or 3 seats leads to the same level of power.  
 
 Another example from Wikipedia::
