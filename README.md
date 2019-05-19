@@ -1,5 +1,6 @@
 
 # powerindex
+[![Build Status](https://travis-ci.org/maxlit/powerindex.svg?branch=master)](https://travis-ci.org/maxlit/powerindex)
 
 A python library to compute power indices
 
