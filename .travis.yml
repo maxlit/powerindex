@@ -2,4 +2,11 @@ language: python
 
 python: 2.7
 
+install:
+  - pip install codecov
+  - pip install pytest pytest-cov
+
 script: python -m unittest discover
+
+after_success:
+  - codecov
