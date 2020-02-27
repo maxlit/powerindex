@@ -185,8 +185,8 @@ class Game:
         #ordered_hashed_parties=sorted(ordered_hashed_parties,key=lambda x: abs(x[1].weight-median)) # mix big and small parties
 
         if self.N>3:# receipt from http://nxn.se/post/46440196846/making-nicer-looking-pie-charts-with-matplotlib
-            large = ordered_hashed_parties[:self.N / 2]
-            small = ordered_hashed_parties[self.N / 2:]
+            large = ordered_hashed_parties[:int(self.N / 2)]
+            small = ordered_hashed_parties[int(self.N / 2):]
             reordered_hashed_parties = large[::2] + small[::2] + large[1::2] + small[1::2]
             angle = 310
         else:
