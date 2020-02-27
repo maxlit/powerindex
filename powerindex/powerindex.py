@@ -64,7 +64,7 @@ class Game:
         coeffs=self._coeffs_of_general_GF("Banzhaf")
         pows=[sum(self._coeffs_of_player_GF(coeffs,weight,"Banzhaf")[(self.quota-weight):self.quota]) for weight in self.weights]
         s_pows=float(sum(pows))
-        self.banzhaf=map(lambda x: x/s_pows,pows)
+        self.banzhaf=list(map(lambda x: x/s_pows,pows))
         
     def calc_shapley_shubik(self):
         coeffs=self._coeffs_of_general_GF("ShapleyShubik")
@@ -83,7 +83,7 @@ class Game:
         #pows=map(lambda x: sum(*x),pl_coeffs)
         #pows=[sum(lambda x: sum(x),self._coeffs_of_player_GF(coeffs,weight,"ShapleyShubik")[(self.quota-weight):self.quota][0:(self.N)])) for weight in self.weights]
         s_pows=float(sum(pows))
-        self.shapley_shubik=map(lambda x: x/s_pows,pows)
+        self.shapley_shubik=list(map(lambda x: x/s_pows,pows))
         
     """
         Computes coefficients of the generating function of the game.
@@ -145,8 +145,8 @@ class Game:
             coeffs[0][0][0]=1
             return coeffs
         elif index=="Banzhaf":
-            coeffs=[[1] for i in xrange(N+1)] # makes a[j][0]=1
-            coeffs[0]=[0 for i in xrange(q+1)]# makes a[0][k]=0
+            coeffs=[[1] for i in range(N+1)] # makes a[j][0]=1
+            coeffs[0]=[0 for i in range(q+1)]# makes a[0][k]=0
             coeffs[0][0]=1
             return coeffs
 
@@ -214,7 +214,7 @@ class Game:
             from matplotlib.colors import ColorConverter
             CC=ColorConverter()
         except ImportError as ex:
-            print "plot() function requires matplotlib library which is not installed on your computer"
+            print("plot() function requires matplotlib library which is not installed on your computer")
             raise ex
         
         # make a pie chart look nices as described here: http://nxn.se/post/46440196846/making-nicer-looking-pie-charts-with-matplotlib
@@ -241,13 +241,13 @@ class Game:
         
         if design=="gray":
             colors_cycle=it.cycle(gray_scales)# blue, green, red, ...
-            colors_raw=[colors_cycle.next() for weight in self.weights]
+            colors_raw=[next(colors_cycle) for weight in self.weights]
             if colors_raw[0]==colors_raw[-1]:
                 colors_raw[-1]-=0.1
             colors=[CC.to_rgb(str(color)) for color in colors_raw]
         else:
             colors_cycle=it.cycle(rgb_colors.values())# blue, green, red, ...
-            colors_raw=[colors_cycle.next() for weight in self.weights]
+            colors_raw=[next(colors_cycle) for weight in self.weights]
             colors=colors_raw
         
         I=len(pow_indices)
@@ -309,4 +309,4 @@ class Game:
     def hist():
         # to do
         n, bins, patches = plt.hist(x, num_bins, normed=1, facecolor='green', alpha=0.5)
-        print "not implemented yet"
+        print("not implemented yet")

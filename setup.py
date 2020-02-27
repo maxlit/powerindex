@@ -2,7 +2,7 @@
 
 from distutils.core import setup
 
-long_description = """Example Packages do this and that
+long_description = """powerindex calculates some common power indices (related to game theory and political science)
 """
 
 setup(name='powerindex',
