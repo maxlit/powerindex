@@ -3,5 +3,5 @@ name: powerindex
 dependencies:
   - python=3.7.3
   - matplotlib
-  - powerindex=0.1.0
+  - powerindex
 
