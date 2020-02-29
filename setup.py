@@ -6,7 +6,7 @@ long_description = """powerindex calculates some common power indices (related t
 """
 
 setup(name='powerindex',
-    version='0.0.4',
+    version='0.1.0',
     description='python library to calculate power indices in weighted voting games',
     author='Maxim Litvak',
     author_email='maxim@litvak.eu',
