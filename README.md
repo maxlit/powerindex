@@ -1,6 +1,7 @@
 
 # powerindex
 [![Build Status](https://travis-ci.org/maxlit/powerindex.svg?branch=master)](https://travis-ci.org/maxlit/powerindex)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/maxlit/powerindex/master?filepath=README.ipynb)
 
 A python library to compute power indices
 
