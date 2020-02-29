@@ -2,11 +2,11 @@
 
 from distutils.core import setup
 
-long_description = """Example Packages do this and that
+long_description = """powerindex calculates some common power indices (related to game theory and political science)
 """
 
 setup(name='powerindex',
-    version='0.0.4',
+    version='0.1.0',
     description='python library to calculate power indices in weighted voting games',
     author='Maxim Litvak',
     author_email='maxim@litvak.eu',

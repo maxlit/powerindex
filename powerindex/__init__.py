@@ -1,1 +1,1 @@
-from powerindex import *
+from powerindex.powerindex import *
