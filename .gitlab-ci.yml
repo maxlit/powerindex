@@ -32,7 +32,7 @@ test:
 
 run:
   script:
-    - install --upgrade pip wheel setuptools
+    - pip install --upgrade pip wheel setuptools
     - python setup.py bdist_wheel
     # an alternative approach is to install and run:
     #- pip install dist/*
