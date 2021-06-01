@@ -32,9 +32,10 @@ test:
 
 run:
   script:
+    - pip install wheel
     - python setup.py bdist_wheel
     # an alternative approach is to install and run:
-    - pip install dist/*
+    #- pip install dist/*
     # run the command here
   artifacts:
     paths:
