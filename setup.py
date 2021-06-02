@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+from setuptools import setup
 
 long_description = """powerindex calculates some common power indices (related to game theory and political science)
 """
