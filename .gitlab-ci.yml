@@ -26,7 +26,7 @@ before_script:
 test:
   script:
     - python setup.py test
-    - python -m unittest discover
+    - python -m unittest
 #    - pip install tox flake8  # you can also use tox
 #    - tox -e py36,flake8
 
