@@ -39,6 +39,8 @@ test:
 
 release:
   stage: release
+  only:
+    - tags
   script:
     - pip install twine
     - python setup.py sdist bdist_wheel
