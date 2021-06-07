@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
 from setuptools import setup
+import os
 
 long_description = """powerindex calculates some common power indices (related to game theory and political science)
 """
 
 setup(name='powerindex',
-    version='0.1.0',
+    version=os.environ['CI_COMMIT_TAG'],
     description='python library to calculate power indices in weighted voting games',
     author='Maxim Litvak',
     author_email='maxim@litvak.eu',
