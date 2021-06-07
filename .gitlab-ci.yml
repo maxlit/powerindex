@@ -1,6 +1,5 @@
 stages:
   - test
-  - build
   - release
 
 # Official language image. Look for the different tagged releases at:
@@ -38,24 +37,15 @@ test:
 #    - pip install tox flake8  # you can also use tox
 #    - tox -e py36,flake8
 
-run:
-  stage: build
-  script:
-    - pip install --upgrade pip wheel setuptools
-    - python setup.py bdist_wheel
-    # an alternative approach is to install and run:
-    #- pip install dist/*
-    # run the command here
-  artifacts:
-    paths:
-      - dist/*.whl
-
 release:
   stage: release
   script:
     - pip install twine
     - python setup.py sdist bdist_wheel
     - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
+  artifacts:
+    paths:
+      - dist/*.whl
 
 #pages:
 #  script:
