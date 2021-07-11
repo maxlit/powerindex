@@ -26,8 +26,8 @@ The most popular approaches to measure power are [Banzhaf](http://en.wikipedia.o
 If you work with docker, launch the jupyter notebook from the command line as follows
 
 ```bash
-docker pull powerindex
-docker run -p 8888:8888 powerindex
+docker pull axlit/powerindex
+docker run -p 8888:8888 axlit/powerindex
 ```
 
 copy the link from the command line and then navigate to /powerindex/README.ipynb notebook in the browser.
