@@ -23,9 +23,16 @@ The most popular approaches to measure power are [Banzhaf](http://en.wikipedia.o
 
 ## How to use it
 
+If you work with docker, launch the jupyter notebook from the command line as follows
+
+```bash
+docker pull powerindex
+docker run -p 8888:8888 powerindex
+```
+
+copy the link from the command line and then navigate to /powerindex/README.ipynb notebook in the browser.
+
 Let's implement an example from the introduction:
-
-
 
 ```python
 %matplotlib inline
