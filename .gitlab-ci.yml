@@ -33,13 +33,15 @@ before_script:
 
 mypy:
   stage: static
+  allow_failure: true
   script:
     - python -m mypy powerindex/*.py
 
 flake8:
   stage: static
+  allow_failure: true
   script:
-    - flake8 --max-line=120 powerindex/*.py
+    - python -m flake8 --max-line=120 powerindex/*.py
 
 pylint:
   stage: static
