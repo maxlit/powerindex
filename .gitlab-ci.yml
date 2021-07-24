@@ -41,7 +41,7 @@ flake8:
   stage: static
   allow_failure: true
   script:
-    - python -m flake8 --max-line=120 powerindex/*.py
+    - flake8 --max-line=120 powerindex/*.py
 
 pylint:
   stage: static
