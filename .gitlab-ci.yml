@@ -1,4 +1,5 @@
 stages:
+  - static
   - test
   - release
 
@@ -29,6 +30,22 @@ before_script:
   #- pip install virtualenv
   #- virtualenv venv
   #- source venv/bin/activate
+
+mypy:
+  stage: static
+  script:
+    - python -m mypy powerindex/*.py
+
+flake8:
+  stage: static
+  script:
+    - flake8 --max-line=120 powerindex/*.py
+
+pylint:
+  stage: static
+  allow_failure: true
+  script:
+  - pylint -d C0301 powerindex/*.py
 
 test:
   stage: test
