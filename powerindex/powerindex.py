@@ -1,5 +1,6 @@
 import math
 import itertools as it
+import argparse
 
 class Party:
     def __init__(self,weight,name):
@@ -310,3 +311,31 @@ class Game:
         # to do
         n, bins, patches = plt.hist(x, num_bins, normed=1, facecolor='green', alpha=0.5)
         print("not implemented yet")
+
+
+def calculate_power_index(weights, quota, index_type):
+    # Your power index calculation logic goes here
+    game=Game(quota, weights)
+    coeffs=game._coeffs_of_general_GF("Banzhaf")
+    return coeffs
+
+def main():
+    parser = argparse.ArgumentParser(prog='px', description='Calculate power index')
+    parser.add_argument('-i', '--index', metavar='INDEX', choices=['ss', 'b'], required=True, help='Power index type')
+    parser.add_argument('-q', '--quota', metavar='QUOTA', type=int, required=True, help='Quota value')
+    parser.add_argument('-w', '--weights', metavar='WEIGHT', type=int, nargs='+', required=True, help='Weights')
+
+    args = parser.parse_args()
+    index_type = args.index
+    quota = args.quota
+    weights = list(args.weights)  # Convert to a Python list
+
+    power_index = calculate_power_index(quota, weights, index_type)
+
+    return power_index
+
+    # Print or use the power index as needed
+
+if __name__ == '__main__':
+    main()
+
