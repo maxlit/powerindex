@@ -316,8 +316,14 @@ class Game:
 def calculate_power_index(weights, quota, index_type):
     # Your power index calculation logic goes here
     game=Game(quota, weights)
-    coeffs=game._coeffs_of_general_GF("Banzhaf")
-    return coeffs
+    if index_type=="ss":
+        game.calc_shapley_shubik()
+        return game.shapley_shubik
+    elif index_type=="b":
+        game.calc_banzhaf()
+        return game.banzhaf
+    else:
+        raise ValueError("Unknown power index type: %s, only 'ss' (Shapley-Shubik) and 'b' (Banzhaf) are accepted" % index_type)
 
 def main():
     parser = argparse.ArgumentParser(prog='px', description='Calculate power index')
@@ -330,7 +336,7 @@ def main():
     quota = args.quota
     weights = list(args.weights)  # Convert to a Python list
 
-    power_index = calculate_power_index(quota, weights, index_type)
+    power_index = calculate_power_index(weights, quota, index_type)
 
     return power_index
 
