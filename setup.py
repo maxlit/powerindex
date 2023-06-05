@@ -31,7 +31,7 @@ setup(name='powerindex',
         ],
     entry_points={
         'console_scripts': [
-            'px = powerindex.cli:main'
+            'px = powerindex.powerindex:main'
         ]
         }
                                          )
