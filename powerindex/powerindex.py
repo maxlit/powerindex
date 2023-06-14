@@ -1,5 +1,7 @@
 import math
 import itertools as it
+import argparse
+import sys
 
 class Party:
     def __init__(self,weight,name):
@@ -48,14 +50,15 @@ class Game:
     """
     def calc(self):
         # find if there's a party with seats greater or equal to quota
-        ge_quota=map(lambda x: 1 if x>=self.quota else 0,self.weights)
-        num_ge_quota=sum(ge_quota)
-        if num_ge_quota==0: # if not calculate according to algos
+        ge_quota = list(map(lambda x: 1 if x >= self.quota else 0, self.weights))
+        num_ge_quota = sum(ge_quota)
+        if num_ge_quota == 0: # if not calculate according to algos
             self.calc_banzhaf()
             self.calc_shapley_shubik()
         else: # if yes manually assign all power to the party (parties)
-            self.banzhaf=map(lambda x: x/float(num_ge_quota),ge_quota)
-            self.shapley_shubik=map(lambda x: x/float(num_ge_quota),ge_quota)
+            self.banzhaf = list(map(lambda x: x / float(num_ge_quota), ge_quota))
+            self.shapley_shubik = list(map(lambda x: x / float(num_ge_quota), ge_quota))
+
 
     """
         Computes Banzhaf power index using generating function approach.
@@ -310,3 +313,36 @@ class Game:
         # to do
         n, bins, patches = plt.hist(x, num_bins, normed=1, facecolor='green', alpha=0.5)
         print("not implemented yet")
+
+
+def calculate_power_index(weights, quota, index_type):
+    # Your power index calculation logic goes here
+    game=Game(quota, weights)
+    if index_type=="ss":
+        game.calc_shapley_shubik()
+        return game.shapley_shubik
+    elif index_type=="b":
+        game.calc_banzhaf()
+        return game.banzhaf
+    else:
+        raise ValueError("Unknown power index type: %s, only 'ss' (Shapley-Shubik) and 'b' (Banzhaf) are accepted" % index_type)
+
+def main():
+    parser = argparse.ArgumentParser(prog='px', description='Calculate power index')
+    parser.add_argument('-i', '--index', metavar='INDEX', choices=['ss', 'b'], required=True, help='Power index type')
+    parser.add_argument('-q', '--quota', metavar='QUOTA', type=int, required=True, help='Quota value')
+    parser.add_argument('-w', '--weights', metavar='WEIGHT', type=int, nargs='+', required=True, help='Weights')
+
+    args = parser.parse_args()
+    index_type = args.index
+    quota = args.quota
+    weights = list(args.weights)  # Convert to a Python list
+
+    power_index = calculate_power_index(weights, quota, index_type)
+    print(power_index)
+    sys.stdout.flush()
+    # Print or use the power index as needed
+
+if __name__ == '__main__':
+    main()
+

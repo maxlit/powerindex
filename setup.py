@@ -11,7 +11,7 @@ setup(name='powerindex',
     description='python library to calculate power indices in weighted voting games',
     author='Maxim Litvak',
     author_email='maxim@litvak.eu',
-    url='http://github.com/maxlit/powerindex',
+    url='http://gitlab.com/maxlit/powerindex',
     test_suite='test',
     packages=['powerindex'],
     keywords=['power index','voting','Banzhaf','Shapley','Shubik', 'weighted voting game','game theory', 'political science'],
@@ -29,5 +29,10 @@ setup(name='powerindex',
         'Topic :: Education',
         'Topic :: Sociology'
         ],
+    entry_points={
+        'console_scripts': [
+            'px = powerindex.powerindex:main'
+        ]
+        }
                                          )
 

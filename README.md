@@ -7,9 +7,15 @@ A python library to compute power indices
 
 __Installation__: pip install powerindex
 
+## TL;DR
+
+Calculation of power indices. Example of CLI ("px" alias) run ([EEC](https://en.wikipedia.org/wiki/European_Economic_Community) in 1957 ):
+
+![png](cli.png)
+
 ## What is all about
 
-The aim of the package is to compute different power indices of the so-called weighted voting systems (games). This package was employed to perform calculations at [powdist.com](powdist.com)
+The aim of the package is to compute different power indices of the so-called weighted voting systems (games).
 
 Players have weights and can form coalitions. A coalition that achieves the required threshold wins.
 
@@ -23,27 +29,39 @@ The most popular approaches to measure power are [Banzhaf](http://en.wikipedia.o
 
 ## How to use it
 
-If you work with docker, launch the jupyter notebook from the command line as follows
+It can be run either as a command line (px) or in python interpreter.
+CLI run:
 
 ```bash
-docker pull axlit/powerindex
-docker run -p 8888:8888 axlit/powerindex
+px -i b -q 4 -w 3 2 1 
 ```
 
-copy the link from the command line and then navigate to /powerindex/README.ipynb notebook in the browser.
+Flags:
+**-i** (index) is either 'b' for Banzhaf, or 'ss' for Shapley-Shubik.
+**-q** (quota) number of votes for a coalition to win.
+**-w** (weights) weights of players.
 
-Let's implement an example from the introduction:
+There's a jupyter notebook /powerindex/README.ipynb that shows some python examples.
+
+A trivial example from the introduction:
+
+```bash
+#bash
+px -i b -q 51 -w 51 49
+px -i ss -q 51 -w 51 49 
+```
 
 ```python
-%matplotlib inline
+#python
+#%matplotlib inline
 import powerindex as px
 game=px.Game(quota=51,weights=[51,49])
 ```
 
-Now calculate Banzhaf and Shapley-Shubik power indices:
-
+Calculation of Banzhaf and Shapley-Shubik power indices:
 
 ```python
+#python
 game.calc_banzhaf()
 print(game.banzhaf)
 ```
@@ -51,8 +69,8 @@ print(game.banzhaf)
     [1.0, 0.0]
 
 
-
 ```python
+#python
 game.calc_shapley_shubik()
 print(game.shapley_shubik)
 ```
@@ -66,8 +84,14 @@ Thus, in this simple example both indices give 100% to 0% distribution.
 
 Now let's changes the seats distribution to the parity and see what happens:
 
+```bash
+#bash
+px -i b -q 51 -w 50 50
+px -i ss -q 51 -w 50 50 
+```
 
 ```python
+#python
 game=px.Game(51,weights=[50,50])
 game.calc()
 
@@ -78,13 +102,17 @@ print(game.shapley_shubik)
     [0.5, 0.5]
     [0.5, 0.5]
 
+As the result, the distribution of power is also at parity.
 
-As the result, the power distribution is also at parity.
+Now, consider a non-trivial, but still a simple examples from [Wikipedia](https://en.wikipedia.org/wiki/Banzhaf_power_index#Simple_voting_game):
 
-Now, consider a non-trivial, but still simple examples from [Wikipedia](https://en.wikipedia.org/wiki/Banzhaf_power_index#Simple_voting_game):
-
+```bash
+#bash
+px -i b -q 6 -w 4 3 2 1 
+```
 
 ```python
+#python
 game=px.Game(6,[4, 3, 2, 1])
 game.calc_banzhaf()
 print(game.banzhaf)
@@ -99,8 +127,13 @@ In this example, having 2 or 3 seats leads to the same level of power.
 
 Another example:
 
+```bash
+#bash
+px -i b -q 6 -w 3 2 1 1 
+```
 
 ```python
+#python
 game=px.Game(6,[3, 2, 1, 1])
 game.calc_banzhaf()
 print(game.banzhaf)
@@ -111,8 +144,13 @@ print(game.banzhaf)
 
 Notice that in the previous two examples Banzhaf and Shapley-Shubik indices coincides. It doesn't hold in general even in the games of 3 voters:
 
+```bash
+#bash
+px -i ss -q 6 -w 3 2 1 1 
+```
 
 ```python
+#python
 game=px.Game(4,[3, 2, 1])
 game.calc() # again it calculates all available indices
 print("Banzhaf index:")
@@ -133,11 +171,11 @@ There's a possibility to plot the power distribution as a pie chart:
 
 
 ```python
+#python
 game=px.Game(4,[3, 2, 1])
 game.calc()
 game.pie_chart()
 ```
-
 
 ![png](output_14_0.png)
 
@@ -148,6 +186,7 @@ Let's take Europen Economic Community (EEC) in the years 1958-1972, its members 
 
 
 ```python
+#python
 countries={"Germany":4,"France":4,"Italy":4,"Belgium":2,"Netherlands":2,"Luxembourg":1}
 parties=[px.Party(countries[country],country) for country in countries]
 game=px.Game(12,parties=parties)
