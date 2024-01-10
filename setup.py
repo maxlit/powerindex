@@ -7,7 +7,7 @@ long_description = """powerindex calculates some common power indices (related t
 """
 
 setup(name='powerindex',
-    version=os.environ['CI_COMMIT_TAG'],
+    version = os.environ.get('CI_COMMIT_TAG', '0.0.0-dev'),
     description='python library to calculate power indices in weighted voting games',
     long_description=long_description,  # Include the long description
     long_description_content_type='text/plain',  # Specify the content type, can be 'text/markdown' for Markdown
