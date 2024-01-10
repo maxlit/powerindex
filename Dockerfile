@@ -1,20 +1,22 @@
-FROM jupyter/minimal-notebook
-COPY requirements.txt requirements.txt
-# Clone a repository (my website in this case)
-RUN git clone https://gitlab.com/maxlit/powerindex.git
-RUN cd powerindex
+# Use a specific base image version from quay.io
+FROM quay.io/jupyter/minimal-notebook:x86_64-python-3.11.7
 
-#RUN pip3 install -r requirements.txt
-ENV POETRY_VERSION=1.2.2
-#ENV POETRY_HOME=/opt/poetry
-#ENV POETRY_VENV=/opt/poetry-venv
-#ENV POETRY_CACHE_DIR=/opt/.cache
+# Set the working directory in the container to /app
+WORKDIR /app
 
-# Install poetry separated from system interpreter
-#RUN python3 -m venv $POETRY_VENV
-RUN pip install -U pip setuptools
-RUN pip install poetry==${POETRY_VERSION}
+# Copy the pyproject.toml and poetry.lock (if exists) files into the container at /app
+COPY pyproject.toml poetry.lock* /app/
 
-# Copy and install dependencies
-COPY pyproject.toml poetry.lock ./
-RUN poetry install --no-interaction --no-ansi
+# Install poetry, disable virtualenv creation, and install dependencies in one layer
+RUN pip install --progress-bar off poetry==1.7.1 && \
+    poetry config virtualenvs.create false
+RUN poetry -v install --no-root
+
+# Copy the contents of the pyEdgeworthBox repository into the container
+COPY . /app/
+
+#RUN pip install --progress-bar off twine && python setup.py sdist bdist_wheel
+
+
+# Continue with any other commands you need
+CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token="]
