@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "powerindex"
-version = "0.1.6"
+version = "0.0.0"
 description = "python library to calculate power indices in weighted voting games"
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"

@@ -329,15 +329,19 @@ def calculate_power_index(weights, quota, index_type):
 
 def main():
     parser = argparse.ArgumentParser(prog='px', description='Calculate power index')
-    parser.add_argument('-i', '--index', metavar='INDEX', choices=['ss', 'b'], required=True, help='Power index type')
-    parser.add_argument('-q', '--quota', metavar='QUOTA', type=int, required=True, help='Quota value')
-    parser.add_argument('-w', '--weights', metavar='WEIGHT', type=int, nargs='+', required=True, help='Weights')
+    parser.add_argument('-i', '--index', metavar='INDEX', choices=['ss', 'b'], default='ss', help='Power index type (default: ss)')
+    parser.add_argument('-q', '--quota', metavar='QUOTA', type=int, required=False, help='Quota value (default: half of the sum of weights)')
+    parser.add_argument('-w', '--weights', metavar='WEIGHT', type=int, nargs='+', required=True, help='integer weights (or votes integers)')
 
     args = parser.parse_args()
     index_type = args.index
     quota = args.quota
     weights = list(args.weights)  # Convert to a Python list
-
+    if args.quota is None:
+        quota = math.ceil(sum(weights) / 2)
+    else:
+        quota = args.quota
+        
     power_index = calculate_power_index(weights, quota, index_type)
     print(power_index)
     sys.stdout.flush()
