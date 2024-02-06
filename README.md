@@ -1,17 +1,26 @@
 
 # powerindex
-[![Build Status](https://travis-ci.org/maxlit/powerindex.svg?branch=master)](https://travis-ci.org/maxlit/powerindex)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/maxlit/powerindex/master?filepath=README.ipynb)
+
 
 A python library to compute power indices
 
-__Installation__: pip install powerindex
+__Installation__: 
+```bash
+pip install powerindex
+```
+
+Google colab: [colab](https://colab.research.google.com/drive/1ZMsXBVqmCmcatnXFGJ6Qdf8rRPlnWbJt?usp=sharing)
 
 ## TL;DR
 
 Calculation of power indices. Example of CLI ("px" alias) run ([EEC](https://en.wikipedia.org/wiki/European_Economic_Community) in 1957 ):
 
-![png](cli.png)
+```bash
+# EEC (1958-1982): Germany, France, Italy, Netherlands, Belgium, Luxemburg
+px -i b -q 12 -w 4 4 4 2 2 1
+# expected result:
+# [0.23809523809523808, 0.23809523809523808, 0.23809523809523808, 0.14285714285714285, 0.14285714285714285, 0.0]
+```
 
 ## What is all about
 
