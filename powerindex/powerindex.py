@@ -33,7 +33,14 @@ class Game:
             self.weights=[party.weight for party in parties]
             
         self.quota=quota
-        
+        # divide by GCD to speed up the calculation
+        gcd = math.gcd(self.quota, *self.weights)
+        if gcd > 1:
+            self.quota = self.quota // gcd
+            self.weights = [w // gcd for w in self.weights]
+        # keep the original values for weights and quota for whatever reaon
+        self.original_quota=quota
+        self.original_weights=weights
         self.N=len(self.weights)
         self.banzhaf=None
         self.shapley_shubik=None
