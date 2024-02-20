@@ -221,6 +221,19 @@ B.Keijzer - A Survey on the Computation of Power Indices (2008)
 T.Uno - Efficient Computation of Power Indices for Weighted Majority Games (2003)
 
 Matsui, Y. Matsui - A Survey of Algorithms for Calculating Power Indices of Weighted Majority Games (2000)
-B.Meglicki - Generating functions partitioning algorithm for com­puting power indices in weighted voting games (20??)
+
+B.Meglicki - Generating functions partitioning algorithm for com­puting power indices in weighted voting games (2010)
 
 Zyczkowski, W. Slomczynski - Voting in the European Union: the square root system of Penrose and a critical point (2004)
+
+## Citation
+
+```bibtex
+@misc{powerindex2024,
+  author = {Maxim Litvak},
+  title = {powerindex: A Python Library for Calculation of Some Common Power Indices},
+  year = {2024},  % Year of the version or first release, as appropriate
+  version = {0.2.4},
+  howpublished = {\url{https://github.com/maxlit/powerindex}},
+}
+```
