@@ -407,12 +407,13 @@ def main():
     index_type = args.index
     quota = args.quota
     weights = list(args.weights)  # Convert to a Python list
+    absolute = args.absolute
     if args.quota is None:
         quota = math.ceil(sum(weights) / 2)
     else:
         quota = args.quota
         
-    power_index = calculate_power_index(weights, quota, index_type)
+    power_index = calculate_power_index(weights, quota, index_type, absolute)
     print(power_index)
     sys.stdout.flush()
     # Print or use the power index as needed
