@@ -84,6 +84,19 @@ class TestPowerIndex(unittest.TestCase):
             game.calc_contested_garment()
             for i in range(len(correct_dist[r])):
                 self.assertAlmostEqual(game.contested_garment[i],correct_dist[r][i])
+
+    def test_calc_contested_garment_permutation(self):
+        # example from https://en.wikipedia.org/wiki/Contested_garment_rule
+        claims = [100, 200, 300]
+        claims_ = [200, 100, 300]
+        for r in range(2, 5):
+            q = r * 100
+            game = Game(q, claims, absolute=True)
+            game.calc_contested_garment()
+            game_ = Game(q, claims_, absolute=True)
+            game_.calc_contested_garment()
+            self.assertNotEqual(game.contested_garment[0], game_.contested_garment[0]) # this element was permutated
+            self.assertAlmostEqual(game.contested_garment[2], game_.contested_garment[2]) # this element wasn't permuted
                 
 def main():
     unittest.main()

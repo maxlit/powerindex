@@ -101,6 +101,9 @@ class Game:
         pows = self._coeffs_of_general_GF("ContestedGarment")
         #pows  = self._coeffs_of_player_GF(limits, self.quota, "ContestedGarment")
         self.contested_garment = list(map(lambda x: x/float(sum(pows)), pows))
+        # restore the permutation
+        permutation, _  = zip(*sorted(enumerate(self.weights), key  = lambda x: x[1]))
+        self.contested_garment = [self.contested_garment[permutation.index(i)] for i in range(self.N)]
         if self.absolute:
             self.contested_garment = list(map(lambda x: x*self.original_quota, self.contested_garment))
         
