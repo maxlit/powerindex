@@ -21,7 +21,7 @@ class Party:
         return self.__str__()
 
 class Game:
-    def __init__(self,quota,weights=None,parties=None):
+    def __init__(self,quota,weights=None,parties=None, absolute=False):
         if parties is None:
             if weights is None:
                 raise TypeError("You need to put weights or parties as parameter while initializing the game")
@@ -46,6 +46,7 @@ class Game:
         self.shapley_shubik=None
         self.s_weights=float(sum(self.weights))
         self.nominal=[weight/self.s_weights for weight in self.weights]
+        self.absolute = absolute
         
     def __len__(self):
         return len(self.parties)
@@ -62,9 +63,11 @@ class Game:
         if num_ge_quota == 0: # if not calculate according to algos
             self.calc_banzhaf()
             self.calc_shapley_shubik()
+            self.calc_contested_garment()
         else: # if yes manually assign all power to the party (parties)
             self.banzhaf = list(map(lambda x: x / float(num_ge_quota), ge_quota))
             self.shapley_shubik = list(map(lambda x: x / float(num_ge_quota), ge_quota))
+            self.contested_garment = list(map(lambda x: x / float(num_ge_quota), ge_quota))
 
 
     """
@@ -73,8 +76,9 @@ class Game:
     def calc_banzhaf(self):
         coeffs=self._coeffs_of_general_GF("Banzhaf")
         pows=[sum(self._coeffs_of_player_GF(coeffs,weight,"Banzhaf")[(self.quota-weight):self.quota]) for weight in self.weights]
-        s_pows=float(sum(pows))
-        self.banzhaf=list(map(lambda x: x/s_pows,pows))
+        self.banzhaf = list(map(lambda x: x/float(sum(pows)), pows))
+        if self.absolute:
+            self.banzhaf = list(map(lambda x: x*self.original_quota, self.banzhaf))
         
     def calc_shapley_shubik(self):
         coeffs=self._coeffs_of_general_GF("ShapleyShubik")
@@ -89,20 +93,46 @@ class Game:
                 if len(relevant)>0:
                     pows[i]+=sum(relevant)*binomial_coefficient
             i+=1
-        #pl_coeffs=[self._coeffs_of_player_GF(coeffs,weight,"ShapleyShubik")[(self.quota-weight):self.quota][0:(self.N)] for weight in self.weights]
-        #pows=map(lambda x: sum(*x),pl_coeffs)
-        #pows=[sum(lambda x: sum(x),self._coeffs_of_player_GF(coeffs,weight,"ShapleyShubik")[(self.quota-weight):self.quota][0:(self.N)])) for weight in self.weights]
-        s_pows=float(sum(pows))
-        self.shapley_shubik=list(map(lambda x: x/s_pows,pows))
+        self.shapley_shubik = list(map(lambda x: x/float(sum(pows)), pows))
+        if self.absolute:
+            self.shapley_shubik = list(map(lambda x: x*self.original_quota, self.shapley_shubik))
+
+    def calc_contested_garment(self):
+        pows = self._coeffs_of_general_GF("ContestedGarment")
+        #pows  = self._coeffs_of_player_GF(limits, self.quota, "ContestedGarment")
+        self.contested_garment = list(map(lambda x: x/float(sum(pows)), pows))
+        if self.absolute:
+            self.contested_garment = list(map(lambda x: x*self.original_quota, self.contested_garment))
         
     """
         Computes coefficients of the generating function of the game.
     """
+    def GF_coeffs(self,N,q,index):
+        if index=="ShapleyShubik":
+            coeffs=[[[1]+[0 for y in range(1,q+1)]] for j in range(N+1)]# a[j][0][0]=1
+            #coeffs[0]=[[0 for k in range(N+1)] for y in range(q+1)]# a[0][k][y]=0
+            coeffs[0]=[[0 for y in range(q+1)] for k in range(N+1)]# a[0][k][y]=0
+            coeffs[0][0][0]=1
+        elif index=="Banzhaf":
+            coeffs=[[1] for i in range(N+1)] # makes a[j][0]=1
+            coeffs[0]=[0 for i in range(q+1)]# makes a[0][k]=0
+            coeffs[0][0]=1
+        elif index == "ContestedGarment":
+            coeffs=[0 for i in range(N)]
+            sorted_weights = sorted(self.weights)
+            s = 0
+            for i in range(N):
+                coeffs[i] = s + sorted_weights[i]*(N-i)/2
+                s += sorted_weights[i]/2
+        return coeffs
+
     def _coeffs_of_general_GF(self,index):
         if index=="Banzhaf":
             return self._coeffs_of_general_GF_bf()
         elif index=="ShapleyShubik":
             return self._coeffs_of_general_GF_sh()
+        elif index == "ContestedGarment":
+            return self._coeffs_of_general_GF_cg()
     
     def _coeffs_of_general_GF_bf(self):
         N=len(self.weights)
@@ -146,25 +176,41 @@ class Game:
             if i>2:
                 pass#coeffs[i-2]=None # free memory
         return coeffs[-1]
-                
-    def GF_coeffs(self,N,q,index):
-        if index=="ShapleyShubik":
-            coeffs=[[[1]+[0 for y in range(1,q+1)]] for j in range(N+1)]# a[j][0][0]=1
-            #coeffs[0]=[[0 for k in range(N+1)] for y in range(q+1)]# a[0][k][y]=0
-            coeffs[0]=[[0 for y in range(q+1)] for k in range(N+1)]# a[0][k][y]=0
-            coeffs[0][0][0]=1
-            return coeffs
-        elif index=="Banzhaf":
-            coeffs=[[1] for i in range(N+1)] # makes a[j][0]=1
-            coeffs[0]=[0 for i in range(q+1)]# makes a[0][k]=0
-            coeffs[0][0]=1
-            return coeffs
+    
+    def tmp_coeffs_of_player_GF_cg(self, q, sorted_weights, limits):
+        N = len(sorted_weights)
+        c = [w/2 for w in sorted_weights]
+        i = 0
+        while limits[i] < q:
+            i += 1
+        if i == 0:
+            c = [q/float(N) for w in sorted_weights]
+        else:
+            for j in range(i, N):
+                c[j] = c[i-1] + (q - limits[i-1])/(N-i)
+        return c
+
+    def _coeffs_of_general_GF_cg(self):
+        sorted_weights = sorted(self.weights)
+        N = len(sorted_weights)
+        W = sum(self.weights)
+        limits = self.GF_coeffs(self.N, W, "ContestedGarment")
+        q = self.quota
+        if q <= W/2:
+            c = self.tmp_coeffs_of_player_GF_cg(q, sorted_weights, limits)
+        else:
+            c = self.tmp_coeffs_of_player_GF_cg(W - q, sorted_weights, limits)
+            for r in range(N):
+                c[r] = sorted_weights[r] - c[r]
+        return c
 
     def _coeffs_of_player_GF(self,coeffs,w,index):
         if index=="Banzhaf":
             return self._coeffs_of_player_GF_bf(coeffs,w)
         elif index=="ShapleyShubik":
             return self._coeffs_of_player_GF_sh(coeffs,w)
+        elif index == "ContestedGarment":
+            return self._coeffs_of_player_GF_cg(coeffs,w)
 
     def _coeffs_of_player_GF_bf(self,coeffs,w):
         W=len(coeffs)-1
@@ -186,6 +232,19 @@ class Game:
                     c[n].append(coeffs[n][k])
                 else:
                     c[n].append(coeffs[n][k]-c[n-1][k-w])
+        return c
+    
+    def _coeffs_of_player_GF_cg(self, sorted_weights, q):
+        sorted_weights = sorted(self.weights)
+        W = sum(self.weights)
+        limits = self.GF_coeffs(self.N, W, "ContestedGarment")
+        #q = self.quota
+        if q <= W/2:
+            c = self.tmp_coeffs_of_player_GF_cg(q, sorted_weights, limits)
+        else:
+            c = self.tmp_coeffs_of_player_GF_cg(W - q, sorted_weights, limits)
+            for r in range(N):
+                c[r] = sorted_weights[r] - c[r]
         return c
 
     def pie_chart(self,indices=["banzhaf","shapley"],fname=None,show=True):
@@ -322,23 +381,27 @@ class Game:
         print("not implemented yet")
 
 
-def calculate_power_index(weights, quota, index_type):
+def calculate_power_index(weights, quota, index_type, absolute=False):
     # Your power index calculation logic goes here
-    game=Game(quota, weights)
+    game=Game(quota, weights, absolute=absolute)
     if index_type=="ss":
         game.calc_shapley_shubik()
         return game.shapley_shubik
-    elif index_type=="b":
+    elif index_type=="b" or index_type=="bz":
         game.calc_banzhaf()
         return game.banzhaf
+    if index_type=="cg":
+        game.calc_contested_garment()
+        return game.contested_garment
     else:
         raise ValueError("Unknown power index type: %s, only 'ss' (Shapley-Shubik) and 'b' (Banzhaf) are accepted" % index_type)
 
 def main():
     parser = argparse.ArgumentParser(prog='px', description='Calculate power index')
-    parser.add_argument('-i', '--index', metavar='INDEX', choices=['ss', 'b'], default='ss', help='Power index type (default: ss)')
+    parser.add_argument('-i', '--index', metavar='INDEX', choices=['ss', 'b', 'bz', 'cg'], default='ss', help='Power index type (default: ss)')
     parser.add_argument('-q', '--quota', metavar='QUOTA', type=int, required=False, help='Quota value (default: half of the sum of weights)')
     parser.add_argument('-w', '--weights', metavar='WEIGHT', type=int, nargs='+', required=True, help='integer weights (or votes integers)')
+    parser.add_argument('-a', '--absolute', metavar='ABS', default=False, help='if the power index should be printed as absolute values (default: False)')
 
     args = parser.parse_args()
     index_type = args.index

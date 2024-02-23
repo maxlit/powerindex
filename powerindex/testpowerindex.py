@@ -62,13 +62,29 @@ class TestPowerIndex(unittest.TestCase):
     def test_calc_shapley_shubik(self):
         #game=Game(2,[1,1])
         #game.calc_shapley_shubik()
-        # example from here http://en.wikipedia.org/wiki/Shapley%E2%80%93Shubik_power_index
+        # example from http://en.wikipedia.org/wiki/Shapley%E2%80%93Shubik_power_index
         game=Game(4,[3,2,1,1])
         game.calc_shapley_shubik()
         correct_dist=[0.5,1/6.0,1/6.0,1/6.0]
         for i in range(len(correct_dist)):
             self.assertAlmostEqual(game.shapley_shubik[i],correct_dist[i])
-            
+
+    def test_calc_contested_garment(self):
+        # example from https://en.wikipedia.org/wiki/Contested_garment_rule
+        correct_dist = {1: [100/3., 100/3., 100/3.],
+                        2: [50, 75, 75],
+                        3: [50, 100, 150],
+                        4: [50, 125, 225],
+                        5: [100/3.0 * 2, 100/3.*2 + 100, 100/3.0*2 + 200]
+                        }
+        claims = [100, 200, 300]
+        for r in range(1, 6):
+            q = r * 100
+            game=Game(q, claims, absolute=True)
+            game.calc_contested_garment()
+            for i in range(len(correct_dist[r])):
+                self.assertAlmostEqual(game.contested_garment[i],correct_dist[r][i])
+                
 def main():
     unittest.main()
 
