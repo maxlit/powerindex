@@ -16,7 +16,7 @@ setup(name='powerindex',
     url='http://gitlab.com/maxlit/powerindex',
     test_suite='test',
     packages=['powerindex'],
-    keywords=['power index','voting','Banzhaf','Shapley','Shubik', 'weighted voting game','game theory', 'political science'],
+    keywords=['power index','voting','Banzhaf','Shapley','Shubik', 'weighted voting game','game theory', 'political science', 'contested garment rule'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Console',

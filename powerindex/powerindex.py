@@ -401,7 +401,7 @@ def calculate_power_index(weights, quota, index_type, absolute=False):
 
 def main():
     parser = argparse.ArgumentParser(prog='px', description='Calculate power index')
-    parser.add_argument('-i', '--index', metavar='INDEX', choices=['ss', 'b', 'bz', 'cg'], default='ss', help='Power index type (default: ss)')
+    parser.add_argument('-i', '--index', metavar='INDEX', choices=['ss', 'b', 'bz', 'cg'], default='ss', help='Power index type: ss - Shapley-Shubik, bz - Banzhaf, cg - Contested Garment (default: ss)')
     parser.add_argument('-q', '--quota', metavar='QUOTA', type=int, required=False, help='Quota value (default: half of the sum of weights)')
     parser.add_argument('-w', '--weights', metavar='WEIGHT', type=int, nargs='+', required=True, help='integer weights (or votes integers)')
     parser.add_argument('-a', '--absolute', action='store_true', help='Calculate a power index in absolute values (weights times quote - makes sense rather for contested garment)')
@@ -417,7 +417,9 @@ def main():
         quota = args.quota
         
     power_index = calculate_power_index(weights, quota, index_type, absolute)
-    print(power_index)
+    # Remove whitespaces, brackets, and then print
+    formatted_output = str(power_index)[1:-1].replace(" ", "")
+    print(formatted_output)
     sys.stdout.flush()
     # Print or use the power index as needed
 

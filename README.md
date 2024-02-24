@@ -36,6 +36,8 @@ It leads to a conclusion that any reasonable rule would assign to party **A** 10
 
 The most popular approaches to measure power are [Banzhaf](http://en.wikipedia.org/wiki/Banzhaf_power_index) and [Shapley-Shubik](http://en.wikipedia.org/wiki/Shapley–Shubik_power_index) power indices.
 
+This package also implements the [Contested Garment Rule](https://en.wikipedia.org/wiki/Contested_garment_rule) (strictly speaking it's not a power index, but similar to some extent).
+
 ## How to use it
 
 It can be run either as a command line (px) or in python interpreter.
@@ -173,6 +175,25 @@ print(game.shapley_shubik)
     Shapley-Shubik index:
     [0.6666666666666667, 0.16666666666666669, 0.16666666666666669]
 
+## Contested Garment Rule
+
+Not exactly a power index, but similar to some extent. [Contested Garment Rule](https://en.wikipedia.org/wiki/Contested_garment_rule) offers a way to split the value of the contested asset when its value is smaller than the some of claims. It's different from the proportional rule.  
+e.g. if the claims are 100, 200 and 300 (i.e. 600 in sum) among three participants, and there's only 210 to split, the rule suggests the split 50, 80, 80 (and not 35, 70, 105).  
+Note the flag -a (absolute) to generate the split in the absolute numbers.
+
+```bash
+!px -i cg -q 210 -a -w 100 200 300
+````
+
+    [50.0, 80.0, 80.0]
+
+```python
+game=px.Game(210,[100, 200, 300], absolute=True)
+game.calc_contested_garment()
+print(game.contested_garment)
+```
+
+    [50.0, 80.0, 80.0]
 
 ## Plot results
 
