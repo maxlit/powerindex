@@ -9,7 +9,7 @@ __Installation__:
 pip install powerindex
 ```
 
-Google colab: [colab](https://colab.research.google.com/drive/1ZMsXBVqmCmcatnXFGJ6Qdf8rRPlnWbJt?usp=sharing)
+Google colab: [colab](https://colab.research.google.com/drive/1jx49L8z7Q_cKBWuGvPdC1rHd36vQawpy?usp=sharing)
 
 ## TL;DR
 
@@ -19,7 +19,7 @@ Calculation of power indices. Example of CLI ("px" alias) run ([EEC](https://en.
 # EEC (1958-1982): Germany, France, Italy, Netherlands, Belgium, Luxemburg
 px -i b -q 12 -w 4 4 4 2 2 1
 # expected result:
-# [0.23809523809523808, 0.23809523809523808, 0.23809523809523808, 0.14285714285714285, 0.14285714285714285, 0.0]
+# 0.23809523809523808,0.23809523809523808,0.23809523809523808,0.14285714285714285,0.14285714285714285,0.0
 ```
 
 ## What is all about
@@ -184,8 +184,6 @@ Note the flag -a (absolute) to generate the split in the absolute numbers.
 ```bash
 !px -i cg -q 210 -a -w 100 200 300
 ````
-
-    [50.0, 80.0, 80.0]
 
 ```python
 game=px.Game(210,[100, 200, 300], absolute=True)
