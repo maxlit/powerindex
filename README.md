@@ -8,7 +8,7 @@ __Installation__:
 ```bash
 pip install powerindex
 ```
-
+Youtube: [Short overview](https://youtu.be/ObH0HUfWiHY?si=dJnvtSlBHjR1zhSY)  
 Google colab: [colab](https://colab.research.google.com/drive/1jx49L8z7Q_cKBWuGvPdC1rHd36vQawpy?usp=sharing)
 
 ## TL;DR
