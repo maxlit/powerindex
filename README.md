@@ -22,6 +22,8 @@ px -i b -q 12 -w 4 4 4 2 2 1
 # 0.23809523809523808,0.23809523809523808,0.23809523809523808,0.14285714285714285,0.14285714285714285,0.0
 ```
 
+![CLI demo](./gifs/230309_px_demo.gif)
+
 ## What is all about
 
 The aim of the package is to compute different power indices of the so-called weighted voting systems (games).
