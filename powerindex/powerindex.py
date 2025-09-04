@@ -399,17 +399,35 @@ def calculate_power_index(weights, quota, index_type, absolute=False):
     else:
         raise ValueError("Unknown power index type: %s, only 'ss' (Shapley-Shubik) and 'b' (Banzhaf) are accepted" % index_type)
 
+def parse_labeled_weight(weight_str):
+    """Parse a weight string in format 'label:value' or just 'value'"""
+    if ':' in weight_str:
+        parts = weight_str.split(':', 1)
+        return parts[0], int(parts[1])
+    else:
+        return None, int(weight_str)
+
 def main():
     parser = argparse.ArgumentParser(prog='px', description='Calculate power index')
     parser.add_argument('-i', '--index', metavar='INDEX', choices=['ss', 'b', 'bz', 'cg'], default='ss', help='Power index type: ss - Shapley-Shubik, bz - Banzhaf, cg - Contested Garment (default: ss)')
     parser.add_argument('-q', '--quota', metavar='QUOTA', type=int, required=False, help='Quota value (default: half of the sum of weights)')
-    parser.add_argument('-w', '--weights', metavar='WEIGHT', type=int, nargs='+', required=True, help='integer weights (or votes integers)')
+    parser.add_argument('-w', '--weights', metavar='WEIGHT', type=str, nargs='+', required=True, help='Weights in format "label:value" or just "value"')
     parser.add_argument('-a', '--absolute', action='store_true', help='Calculate a power index in absolute values (weights times quote - makes sense rather for contested garment)')
+    parser.add_argument('--csv', action='store_true', help='Output in CSV format with labels and values columns')
+    parser.add_argument('-r', '--round', metavar='DIGITS', type=int, default=3, help='Number of decimal places to round to (default: 3)')
 
     args = parser.parse_args()
     index_type = args.index
     quota = args.quota
-    weights = list(args.weights)  # Convert to a Python list
+    
+    # Parse weights and labels
+    labels = []
+    weights = []
+    for weight_str in args.weights:
+        label, weight = parse_labeled_weight(weight_str)
+        labels.append(label if label else f"Party{len(labels)+1}")
+        weights.append(weight)
+    
     absolute = args.absolute
     if args.quota is None:
         quota = math.ceil(sum(weights) / 2)
@@ -417,9 +435,19 @@ def main():
         quota = args.quota
         
     power_index = calculate_power_index(weights, quota, index_type, absolute)
-    # Remove whitespaces, brackets, and then print
-    formatted_output = str(power_index)[1:-1].replace(" ", "")
-    print(formatted_output)
+    
+    # Apply rounding (default is 3 decimal places)
+    power_index = [round(value, args.round) for value in power_index]
+    
+    if args.csv:
+        # Output as CSV with labels and values
+        for label, value in zip(labels, power_index):
+            print(f"{label},{value}")
+    else:
+        # Remove whitespaces, brackets, and then print (original behavior)
+        formatted_output = str(power_index)[1:-1].replace(" ", "")
+        print(formatted_output)
+    
     sys.stdout.flush()
     # Print or use the power index as needed
 
