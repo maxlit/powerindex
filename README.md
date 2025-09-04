@@ -19,7 +19,17 @@ Calculation of power indices. Example of CLI ("px" alias) run ([EEC](https://en.
 # EEC (1958-1982): Germany, France, Italy, Netherlands, Belgium, Luxemburg
 px -i b -q 12 -w 4 4 4 2 2 1
 # expected result:
-# 0.23809523809523808,0.23809523809523808,0.23809523809523808,0.14285714285714285,0.14285714285714285,0.0
+# 0.238,0.238,0.238,0.143,0.143,0.0
+
+# With party labels and CSV output
+px -i b -q 12 -w Germany:4 France:4 Italy:4 Netherlands:2 Belgium:2 Luxembourg:1 --csv
+# expected result:
+# Germany,0.238
+# France,0.238
+# Italy,0.238
+# Netherlands,0.143
+# Belgium,0.143
+# Luxembourg,0.0
 ```
 
 ![CLI demo](./gifs/230309_px_demo.gif)
@@ -49,10 +59,50 @@ CLI run:
 px -i b -q 4 -w 3 2 1 
 ```
 
-Flags:
-**-i** (index) is either 'b' for Banzhaf, or 'ss' for Shapley-Shubik.
-**-q** (quota) number of votes for a coalition to win.
-**-w** (weights) weights of players.
+### Command Line Flags
+
+- **`-i`** (index): Power index type
+  - `b` or `bz` - Banzhaf index
+  - `ss` - Shapley-Shubik index  
+  - `cg` - Contested Garment rule
+
+- **`-q`** (quota): Number of votes required for a coalition to win
+  - If not specified, defaults to simple majority (⌈sum(weights)/2⌉)
+
+- **`-w`** (weights): Weights/votes of players
+  - Simple format: `3 2 1` (unlabeled)
+  - Labeled format: `PartyA:3 PartyB:2 PartyC:1`
+
+- **`--csv`**: Output in CSV format with label,value columns
+  - Useful for importing results into spreadsheets or other tools
+
+- **`-r`** (round): Number of decimal places to round to
+  - Default: 3
+  - Example: `-r 5` for 5 decimal places
+
+- **`-a`** (absolute): Calculate in absolute values 
+  - Mainly useful for Contested Garment rule
+
+### Examples
+
+```bash
+# Basic usage with simple weights
+px -i b -q 51 -w 30 25 15 10
+
+# With party labels
+px -i ss -w Union:221 SPD:127 Green:90 Left:68 BSW:39 -q 355
+
+# CSV output with labels and custom rounding
+px -i b -w PartyA:40 PartyB:30 PartyC:20 PartyD:10 --csv -r 2
+# Output:
+# PartyA,0.42
+# PartyB,0.25
+# PartyC,0.25
+# PartyD,0.08
+
+# Contested Garment with absolute values
+px -i cg -q 210 -a -w 100 200 300
+```
 
 There's a jupyter notebook /powerindex/README.ipynb that shows some python examples.
 
