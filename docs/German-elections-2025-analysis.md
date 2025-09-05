@@ -13,9 +13,9 @@ This analysis is purely *mechanical*: it does not take into account political po
 Power distribution is not only about the number of votes you get, but also about how the votes are distributed. For example, if one party gets 49% and another gets 51%, the smaller one has zero power in a simple majority system. However, if there are 10 other parties with 5% each, the 49% party holds almost all the power. Thus, depending on the distribution of votes among the rest, a party’s power can range anywhere between 0% and 100%.  
 
 How do we measure it? The common approach is to count the situations in which a party is decisive for forming a winning coalition.  
-There are different ways of doing this (e.g. [Banzhaf index](https://en.wikipedia.org/wiki/Banzhaf_power_index), [Shapley–Shubik index](https://en.wikipedia.org/wiki/Shapley–Shubik_power_index) etc). While they can differ in extreme cases, they usually produce similar results in practice (we use Banzhaf index for our analysis).
+There are different ways of doing this (e.g. [Banzhaf index](https://en.wikipedia.org/wiki/Banzhaf_power_index), [Shapley-Shubik index](https://en.wikipedia.org/wiki/Shapley-Shubik_power_index) etc). While they can differ in extreme cases, they usually produce similar results in practice (we use Banzhaf index for our analysis).
 
-## German elections – data
+## German elections - data
 
 First, here are the election results:
 
@@ -25,7 +25,7 @@ First, here are the election results:
 | SPD   | 25.7% | 16.4% |
 | AfD   | 10.3% | 20.8% |
 | Green | 14.7% | 11.6% |
-| BSW   | –     | 4.98% |
+| BSW   | -     | 4.98% |
 | Left  | 4.9%  | 8.8%  |
 | FDP   | 11.4% | 4.3%  |
 
@@ -47,7 +47,7 @@ Which led to the following distribution of seats (the last column shows the hypo
 
 *Side note:* German election rules are relatively complicated. The number of seats depends on the vote distribution, Bavaria has a special system, the SSW always gets one seat, and there is a mixed system of candidate votes and party votes. We abstract from these details here.
 
-## German elections – power distribution
+## German elections - power distribution
 
 With theory and data in hand, we can calculate the power distribution. We use the Python package [powerindex](https://github.com/maxlit/powerindex).  
 
@@ -105,7 +105,7 @@ SSW,0.0
 
 Putting it all together:
 
-| Party | 2021 | 2025   | *2025+BSW | *2025–AfD | 
+| Party | 2021 | 2025   | *2025+BSW | *2025-AfD |
 |-------|-------|-------|-----------|-----------|
 | Union | 33.3% | 40%   | 33.3%     | 58.3%     |
 | SPD   | 33.3% | 23.3% | 16.7%     | 25%       |
