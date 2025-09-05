@@ -414,7 +414,7 @@ def main():
     parser.add_argument('-w', '--weights', metavar='WEIGHT', type=str, nargs='+', required=True, help='Weights in format "label:value" or just "value"')
     parser.add_argument('-a', '--absolute', action='store_true', help='Calculate a power index in absolute values (weights times quote - makes sense rather for contested garment)')
     parser.add_argument('--csv', action='store_true', help='Output in CSV format with labels and values columns')
-    parser.add_argument('-r', '--round', metavar='DIGITS', type=int, default=3, help='Number of decimal places to round to (default: 3)')
+    parser.add_argument('-r', '--round', metavar='DIGITS', type=int, nargs='?', const=3, default=None, help='Number of decimal places to round to (default: 3 when flag is used)')
 
     args = parser.parse_args()
     index_type = args.index
@@ -436,8 +436,9 @@ def main():
         
     power_index = calculate_power_index(weights, quota, index_type, absolute)
     
-    # Apply rounding (default is 3 decimal places)
-    power_index = [round(value, args.round) for value in power_index]
+    # Apply rounding if specified
+    if args.round is not None:
+        power_index = [round(value, args.round) for value in power_index]
     
     if args.csv:
         # Output as CSV with labels and values
