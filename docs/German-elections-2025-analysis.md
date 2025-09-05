@@ -3,16 +3,17 @@
 The German federal election of 2025 represents an interesting case for game-theoretic analysis because the parties agreed to exclude the second-largest party (AfD) from any coalition.  
 This had a few notable side effects:
 1. The SPD, previously the strongest party, was able to retain a strong power position even though it lost more than a third of its votes.  
-2. One party (BSW) narrowly failed to pass the 5% threshold, missing it by just 0.02%. This significantly (not marginally) re-distributed power.  
+2. Besides, one party (BSW) narrowly failed to pass the 5% threshold, missing it by a small margin (0.02%). This significantly (not by a margin) re-distributed power.  
 
 In what follows, we briefly review the theory behind the analysis, present the data, and then dive into the outcomes.  
 This analysis is purely *mechanical*: it does not take into account political positions.
 
 ## Quick overview of the theory on power indices
 
-Power distribution is not only about the number of votes you get, but also about how the votes are distributed. For example, if one party gets 49% and another gets 51%, the smaller one has zero power in a simple majority system. However, if there are 10 other parties with 5% each, the 49% party holds almost all the power. Thus, depending on the distribution of votes, a party’s power can range anywhere between 0% and 100%.  
+Power distribution is not only about the number of votes you get, but also about how the votes are distributed. For example, if one party gets 49% and another gets 51%, the smaller one has zero power in a simple majority system. However, if there are 10 other parties with 5% each, the 49% party holds almost all the power. Thus, depending on the distribution of votes among the rest, a party’s power can range anywhere between 0% and 100%.  
 
-How do we measure it? The common approach is to count the number of coalitions in which a party is pivotal. There are different ways of doing this ([Banzhaf index](https://en.wikipedia.org/wiki/Banzhaf_power_index), [Shapley–Shubik index](https://en.wikipedia.org/wiki/Shapley–Shubik_power_index)). While they can differ in extreme cases, they usually produce similar results in practice. The most common measures are the Banzhaf and the Shapley–Shubik indices.
+How do we measure it? The common approach is to count the situations in which a party is decisive for forming a winning coalition.  
+There are different ways of doing this (e.g. [Banzhaf index](https://en.wikipedia.org/wiki/Banzhaf_power_index), [Shapley–Shubik index](https://en.wikipedia.org/wiki/Shapley–Shubik_power_index) etc). While they can differ in extreme cases, they usually produce similar results in practice (we use Banzhaf index for our analysis).
 
 ## German elections – data
 
@@ -25,7 +26,7 @@ First, here are the election results:
 | AfD   | 10.3% | 20.8% |
 | Green | 14.7% | 11.6% |
 | BSW   | –     | 4.98% |
-| Left  | 8.8%  | 4.9%  |
+| Left  | 4.9%  | 8.8%  |
 | FDP   | 11.4% | 4.3%  |
 
 Which led to the following distribution of seats (the last column shows the hypothetical distribution if BSW had passed the 5% threshold):
