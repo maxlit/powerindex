@@ -1,5 +1,4 @@
 ---
-layout: plain
 permalink: /German-elections-2025-analysis
 ---
 
