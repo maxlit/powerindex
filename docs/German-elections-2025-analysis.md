@@ -1,3 +1,8 @@
+---
+layout: null
+permalink: /powerindex/German-elections-2025-analysis
+---
+
 # Game-theoretic analysis of the German federal election 2025
 
 The German federal election of 2025 represents an interesting case for game-theoretic analysis because the parties agreed to exclude the second-largest party (AfD) from any coalition.  
