@@ -1,6 +1,6 @@
 ---
 layout: null
-permalink: /powerindex/German-elections-2025-analysis
+permalink: /German-elections-2025-analysis
 ---
 
 # Game-theoretic analysis of the German federal election 2025
