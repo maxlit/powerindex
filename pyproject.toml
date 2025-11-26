@@ -1,16 +1,15 @@
-[tool.poetry]
+[project]
 name = "powerindex"
 version = "0.0.0"
 description = "python library to calculate power indices in weighted voting games"
-authors = ["Your Name <you@example.com>"]
+authors = [{name = "Your Name", email = "you@example.com"}]
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.9"
-matplotlib = "^3.7.1"
-pylint = "^2.17.4"
-
+requires-python = ">=3.9"
+dependencies = [
+    "matplotlib>=3.7.1",
+    "pylint>=2.17.4",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"

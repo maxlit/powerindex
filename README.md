@@ -4,9 +4,14 @@
 
 A python library to compute power indices
 
-__Installation__: 
+__Installation__:
 ```bash
 pip install powerindex
+```
+
+For development:
+```bash
+uv sync
 ```
 Youtube: [Short overview](https://youtu.be/ObH0HUfWiHY?si=dJnvtSlBHjR1zhSY)  
 Google colab: [colab](https://colab.research.google.com/drive/1jx49L8z7Q_cKBWuGvPdC1rHd36vQawpy?usp=sharing)
